@@ -75,7 +75,7 @@ with open(os.path.join(PROJECT_DIR, 'README.rst')) as fh:
 
 setup(
     name='django-oscar',
-    version=get_version(),
+    version='2.0.5dev1',
     url='https://github.com/django-oscar/django-oscar',
     author="David Winterbottom",
     author_email="david.winterbottom@gmail.com",
