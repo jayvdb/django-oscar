@@ -1,4 +1,5 @@
 from django import shortcuts
+from django.apps import apps
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
@@ -13,7 +14,7 @@ from oscar.apps.basket.signals import (
     basket_addition, voucher_addition, voucher_removal)
 from oscar.core import ajax
 from oscar.core.compat import url_has_allowed_host_and_scheme
-from oscar.core.loading import get_class, get_classes, get_model
+from oscar.core.loading import get_class, get_classes, get_model, feature_hidden
 from oscar.core.utils import redirect_to_referrer, safe_referrer
 
 Applicator = get_class('offer.applicator', 'Applicator')
@@ -100,7 +101,8 @@ class BasketView(ModelFormSetView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['voucher_form'] = self.get_basket_voucher_form()
+        if not feature_hidden('vouchers'):
+            context['voucher_form'] = self.get_basket_voucher_form()
 
         # Shipping information is included to give an idea of the total order
         # cost.  It is also important for PayPal Express where the customer
