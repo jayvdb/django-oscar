@@ -4,6 +4,7 @@ from urllib.parse import quote
 from django import http
 from django.contrib import messages
 from django.contrib.auth import login
+from django.core.exceptions import SuspiciousOperation
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
@@ -28,6 +29,7 @@ NoShippingRequired = get_class('shipping.methods', 'NoShippingRequired')
 Order = get_model('order', 'Order')
 ShippingAddress = get_model('order', 'ShippingAddress')
 UserAddress = get_model('address', 'UserAddress')
+
 Country = get_model('address', 'Country')
 
 # Standard logger for checkout events
@@ -669,7 +671,8 @@ class ThankYouView(generic.DetailView):
                 order = Order._default_manager.get(
                     pk=self.request.session['checkout_order_id'])
             else:
-                raise http.Http404(_("No order found"))
+                raise SuspiciousOperation(
+                    _("session checkout_order_id missing"))
 
         return order
 
