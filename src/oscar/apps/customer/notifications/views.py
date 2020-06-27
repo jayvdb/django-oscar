@@ -93,7 +93,7 @@ class UpdateView(BulkEditMixin, generic.RedirectView):
         messages.success(request, msg)
         return self.get_success_response()
 
-    def delete(self, request, notifications):
+    def delete(self, request, notifications=[]):
         for notification in notifications:
             notification.delete()
         msg = ngettext(
