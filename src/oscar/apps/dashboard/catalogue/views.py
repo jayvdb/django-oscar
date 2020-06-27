@@ -227,6 +227,8 @@ class ProductCreateUpdateView(generic.UpdateView):
                          'image_formset': self.image_formset,
                          'recommended_formset': self.recommendations_formset,
                          'stockrecord_formset': self.stockrecord_formset}
+        self.creating = None
+        self.parent = None
 
     def dispatch(self, request, *args, **kwargs):
         resp = super().dispatch(
